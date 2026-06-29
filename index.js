@@ -51,5 +51,3 @@ TOKENS.forEach((token, index) => {
 
   client.login(token).catch(console.error);
 });
-
-client.login(process.env.TOKEN);
