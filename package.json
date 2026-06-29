@@ -1,10 +1,13 @@
-{
+{{
   "name": "discord-voice-bot",
   "version": "1.0.0",
-  "description": "Simple Discord voice bot",
+  "description": "5 Discord voice bots",
   "main": "index.js",
   "scripts": {
     "start": "node index.js"
+  },
+  "engines": {
+    "node": ">=20"
   },
   "dependencies": {
     "@discordjs/voice": "^0.18.0",
