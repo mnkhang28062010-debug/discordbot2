@@ -1,24 +1,40 @@
-const { fork } = require("child_process");
+const express = require("express");
+const { Client, GatewayIntentBits } = require("discord.js");
 
-const tokens = [
-  process.env.TOKEN1,
-  process.env.TOKEN2,
-  process.env.TOKEN3,
-  process.env.TOKEN4,
-  process.env.TOKEN5,
-];
+const app = express();
+const PORT = process.env.PORT || 10000;
 
-tokens.forEach((token, index) => {
-  if (!token) {
-    console.log(`TOKEN${index + 1} not found`);
-    return;
-  }
-
-  fork("./bot.js", [], {
-    env: {
-      ...process.env,
-      TOKEN: token,
-      BOT_NUMBER: index + 1,
-    },
-  });
+/* ================= WEB SERVER ================= */
+app.get("/", (req, res) => {
+  res.send("Bot is alive!");
 });
+
+app.listen(PORT, () => {
+  console.log("Web server started on port", PORT);
+});
+
+/* ================= DISCORD BOT ================= */
+const client = new Client({
+  intents: [
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.MessageContent,
+    GatewayIntentBits.GuildVoiceStates
+  ]
+});
+
+client.once("ready", () => {
+  console.log(`Bot online: ${client.user.tag}`);
+});
+
+/* TEST COMMAND */
+client.on("messageCreate", (message) => {
+  if (message.author.bot) return;
+
+  if (message.content === "!ping") {
+    message.reply("Pong!");
+  }
+});
+
+/* LOGIN */
+client.login(process.env.TOKEN);
