@@ -1,7 +1,7 @@
 const { Client, GatewayIntentBits } = require("discord.js");
 const { joinVoiceChannel } = require("@discordjs/voice");
 
-const TOKEN = "MTUyMTE0MDcyMzkzNDU2MDM2Nw.Gf_nW2.ElXUhwFsHm_-AkHJ09jvT6CZ64woV1KjXtG3Yk";
+const TOKEN = "MTUyMTE0MDcyMzkzNDU2MDM2Nw.GA-mxs.q7NbVzChHGbK_ylkHVerr6fMCqqP1ncZ4eGkAg";
 const GUILD_ID = "1461352606021452022";
 const VOICE_CHANNEL_ID = "1521192322899902637";
 
