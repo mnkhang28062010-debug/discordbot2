@@ -1,12 +1,14 @@
 {
-  "name": "discord-bot",
+  "name": "discord-voice-bot",
   "version": "1.0.0",
+  "description": "Bot tự vào voice",
   "main": "index.js",
   "scripts": {
     "start": "node index.js"
   },
   "dependencies": {
-    "discord.js": "^14.16.0",
-    "express": "^4.19.2"
+    "@discordjs/voice": "^0.18.0",
+    "discord.js": "^14.21.0",
+    "dotenv": "^16.6.1"
   }
 }
