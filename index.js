@@ -1,35 +1,41 @@
-const express = require("express");
 const { Client, GatewayIntentBits } = require("discord.js");
 const { joinVoiceChannel } = require("@discordjs/voice");
 
-const app = express();
-
-app.get("/", (req, res) => {
-  res.send("Bot is running!");
-});
-
-app.listen(process.env.PORT || 3000);
+const TOKEN = "YOUR_BOT_TOKEN";
+const GUILD_ID = "YOUR_GUILD_ID";
+const VOICE_CHANNEL_ID = "YOUR_VOICE_CHANNEL_ID";
 
 const client = new Client({
   intents: [
     GatewayIntentBits.Guilds,
-    GatewayIntentBits.GuildVoiceStates,
-  ],
+    GatewayIntentBits.GuildVoiceStates
+  ]
 });
 
-client.once("clientReady", async () => {
-  console.log(`Logged in as ${client.user.tag}`);
+client.once("ready", async () => {
+  console.log(`✅ ${client.user.tag} đã online!`);
 
-  const guild = await client.guilds.fetch(process.env.GUILD_ID);
+  try {
+    const guild = await client.guilds.fetch(GUILD_ID);
+    const channel = await guild.channels.fetch(VOICE_CHANNEL_ID);
 
-  joinVoiceChannel({
-    channelId: process.env.VOICE_ID,
-    guildId: guild.id,
-    adapterCreator: guild.voiceAdapterCreator,
-    selfDeaf: false,
-  });
+    if (!channel || channel.type !== 2) {
+      console.log("❌ Voice Channel ID không đúng.");
+      return;
+    }
 
-  console.log("Joined voice channel!");
+    joinVoiceChannel({
+      channelId: channel.id,
+      guildId: guild.id,
+      adapterCreator: guild.voiceAdapterCreator,
+      selfDeaf: false,
+      selfMute: false,
+    });
+
+    console.log("🎧 Bot đã vào voice.");
+  } catch (err) {
+    console.error(err);
+  }
 });
 
-client.login(process.env.TOKEN);
+client.login(TOKEN);
