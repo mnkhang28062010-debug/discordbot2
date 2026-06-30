@@ -1,40 +1,24 @@
-const express = require("express");
-const { Client, GatewayIntentBits } = require("discord.js");
+require("dotenv").config();
 
-const app = express();
-const PORT = process.env.PORT || 10000;
+const { Client, GatewayIntentBits, ChannelType } = require("discord.js");
+const { joinVoiceChannel } = require("@discordjs/voice");
 
-/* ================= WEB SERVER ================= */
-app.get("/", (req, res) => {
-  res.send("Bot is alive!");
-});
-
-app.listen(PORT, () => {
-  console.log("Web server started on port", PORT);
-});
-
-/* ================= DISCORD BOT ================= */
 const client = new Client({
-  intents: [
-    GatewayIntentBits.Guilds,
-    GatewayIntentBits.GuildMessages,
-    GatewayIntentBits.MessageContent,
-    GatewayIntentBits.GuildVoiceStates
-  ]
+    intents: [GatewayIntentBits.Guilds]
 });
 
-client.once("ready", () => {
-  console.log(`Bot online: ${client.user.tag}`);
-});
+client.once("ready", async () => {
+    console.log(`Đăng nhập thành công: ${client.user.tag}`);
 
-/* TEST COMMAND */
-client.on("messageCreate", (message) => {
-  if (message.author.bot) return;
+    try {
+        const guild = await client.guilds.fetch("1461352606021452022");
+        const channel = await guild.channels.fetch("1521192322899902637");
 
-  if (message.content === "!ping") {
-    message.reply("Pong!");
-  }
-});
+        if (!channel || channel.type !== ChannelType.GuildVoice) {
+            return console.log("Không tìm thấy kênh voice.");
+        }
 
-/* LOGIN */
-client.login(process.env.TOKEN);
+        joinVoiceChannel({
+            channelId: channel.id,
+            guildId: guild.id,
+           
